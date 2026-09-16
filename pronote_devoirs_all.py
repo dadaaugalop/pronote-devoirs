@@ -14,11 +14,8 @@ from email.header import Header
 from pathlib import Path
 
 try:
-    from pronotepy import Client
-    from googletrans import Translator
-except ImportError:
-    print("Installe les dépendances avec: pip3 install pronotepy googletrans==3.1.0a0")
-    exit(1)
+from pronotepy import Client
+from googletrans import Translator
 
 translator = Translator()
 
