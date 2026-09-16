@@ -13,7 +13,6 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from pathlib import Path
 
-try:
 from pronotepy import Client
 from googletrans import Translator
 
