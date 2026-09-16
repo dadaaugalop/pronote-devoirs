@@ -13,7 +13,6 @@ def health():
 @app.route('/devoirs', methods=['GET'])
 def devoirs():
     try:
-        # Utilise le chemin relatif pour Render
         script_path = os.path.join(os.path.dirname(__file__), 'pronote_devoirs_all.py')
         
         result = subprocess.run(
@@ -23,29 +22,29 @@ def devoirs():
             timeout=300
         )
         
+        # Capture TOUT (stdout + stderr)
+        output = result.stdout + result.stderr
+        
         if result.returncode == 0:
             return {
                 'message': 'Devoirs envoyés avec succès',
+                'output': output,
                 'status': 'success',
                 'timestamp': datetime.now().isoformat()
             }, 200
         else:
             return {
-                'message': f'Erreur : {result.stderr}',
+                'message': f'Erreur (code {result.returncode})',
+                'output': output,
                 'status': 'error',
                 'timestamp': datetime.now().isoformat()
             }, 500
     
-    except subprocess.TimeoutExpired:
-        return {
-            'message': 'Timeout : le script a pris trop de temps',
-            'status': 'error',
-            'timestamp': datetime.now().isoformat()
-        }, 500
-    
     except Exception as e:
+        import traceback
         return {
-            'message': f'Erreur : {str(e)}',
+            'message': f'Exception : {str(e)}',
+            'traceback': traceback.format_exc(),
             'status': 'error',
             'timestamp': datetime.now().isoformat()
         }, 500
